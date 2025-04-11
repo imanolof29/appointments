@@ -9,6 +9,7 @@ export class UserMapper {
             lastName: userEntity.lastName,
             email: userEntity.email,
             password: userEntity.password,
+            active: userEntity.active,
             verificationStatus: userEntity.isVerified,
             verificationToken: userEntity.verificationToken,
             verificationTokenExpiresAt: userEntity.verificationTokenExpires,
@@ -21,6 +22,7 @@ export class UserMapper {
         entity.lastName = user.lastName.value;
         entity.email = user.email.value;
         entity.password = user.password.value;
+        entity.active = user.active.value;
         entity.isVerified = user.verificationStatus.value;
         entity.verificationToken = user.verificationToken?.value || null;
         entity.verificationTokenExpires = user.verificationTokenExpiresAt?.value || null;
