@@ -4,6 +4,8 @@ import { SignInUseCase } from "../application/sign-in/sign-in";
 import { UsersModule } from "src/contexts/users/infrastructure/users.module";
 import { JwtModule } from "@nestjs/jwt";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { SignUpController } from "./http/sign-up/sign-up.controller";
+import { SignUpUseCase } from "../application/sign-up/sign-up";
 
 @Module({
     imports: [
@@ -18,10 +20,12 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
         UsersModule
     ],
     controllers: [
-        SignInController
+        SignInController,
+        SignUpController
     ],
     providers: [
-        SignInUseCase
+        SignInUseCase,
+        SignUpUseCase
     ]
 })
 export class AuthModule { }

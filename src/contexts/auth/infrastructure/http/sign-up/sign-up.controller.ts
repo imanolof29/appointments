@@ -1,24 +1,26 @@
 import { Body, Controller, NotFoundException, Post } from "@nestjs/common";
 import { AUTH_CONSTANTS } from "../auth.constants";
-import { SignInUseCase } from "src/contexts/auth/application/sign-in/sign-in";
+import { SignUpDto } from "src/contexts/auth/application/dto/sign-up.dto";
 import { UserNotFoundException } from "src/contexts/users/domain/user-not-found.exception";
-import { SignInDto } from "src/contexts/auth/application/dto/sign-in.dto";
-import { AuthDto } from "src/contexts/auth/application/dto/auth.dto";
+import { SignUpUseCase } from "src/contexts/auth/application/sign-up/sign-up";
 
 @Controller(AUTH_CONSTANTS)
-export class SignInController {
+export class SignUpController {
 
     constructor(
-        private readonly signInUseCase: SignInUseCase
+        private readonly signUpUseCase: SignUpUseCase
     ) { }
 
-    @Post("sign-in")
+
+    @Post("sign-up")
     async run(
-        @Body() signInDto: SignInDto,
-    ): Promise<AuthDto> {
+        @Body() signUpDto: SignUpDto,
+    ): Promise<void> {
         try {
-            return await this.signInUseCase.execute({
-                email: signInDto.email
+            return await this.signUpUseCase.execute({
+                firstName: signUpDto.firstName,
+                lastName: signUpDto.lastName,
+                email: signUpDto.email
             })
         } catch (error) {
             if (error instanceof UserNotFoundException) {
@@ -27,5 +29,4 @@ export class SignInController {
             throw error
         }
     }
-
 }
