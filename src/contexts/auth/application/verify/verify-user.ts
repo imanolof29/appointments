@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { User } from "src/contexts/users/domain/user.entity";
 import { UserRepository } from "src/contexts/users/domain/user.repository";
+import { VerificationException } from "../../domain/verification.exception";
 
 @Injectable()
 export class VerifyUserUseCase {
@@ -11,13 +11,20 @@ export class VerifyUserUseCase {
 
     async execute(properties: {
         token: string,
-        user: User
+        userId: string
     }) {
-        const verifiedUser = properties.user.verify(properties.token);
-        if (!verifiedUser) {
-            throw new Error("Invalid token");
+        const user = await this.userRepository.findById(properties.userId);
+
+        if (!user) {
+            throw new VerificationException('User not found');
         }
+
+        const verifiedUser = user.verify(properties.token);
+
+        if (!verifiedUser) {
+            throw new VerificationException('Invalid or expired verification token');
+        }
+
         await this.userRepository.save(verifiedUser);
     }
-
 }
