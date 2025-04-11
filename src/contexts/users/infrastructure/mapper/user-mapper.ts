@@ -8,6 +8,8 @@ export class UserMapper {
             firstName: userEntity.firstName,
             lastName: userEntity.lastName,
             email: userEntity.email,
+            verificationStatus: userEntity.isVerified,
+            verificationToken: userEntity.verificationToken,
         })
     }
     static toPersistence(user: User): UserEntity {

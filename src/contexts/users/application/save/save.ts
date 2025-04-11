@@ -17,7 +17,10 @@ export class SaveUserUseCase {
         const user = User.create({
             firstName: properties.firstName,
             lastName: properties.lastName,
-            email: properties.email
+            email: properties.email,
+            verificationStatus: false,
+            //TODO: Add verification token
+            verificationToken: undefined
         });
         const existingUser = await this.userRepository.findByEmail(user.email.value);
         if (existingUser) {

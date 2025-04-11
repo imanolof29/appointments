@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ResponseNormalizerModule } from './app/http/response-normalizer/response-normalizer.module';
 import { AuthModule } from './contexts/auth/infrastructure/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { SharedModule } from './contexts/shared/infrastructure/shared.module';
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import { ConfigModule } from '@nestjs/config';
     }),
     UsersModule,
     AuthModule,
-    ResponseNormalizerModule
+    ResponseNormalizerModule,
+    SharedModule
   ],
   controllers: [AppController],
   providers: [AppService],
