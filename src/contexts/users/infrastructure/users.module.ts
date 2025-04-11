@@ -8,17 +8,21 @@ import { UserEntity } from './entity/user.entity';
 import { FindByIdUserUseCase } from '../application/find-by-id/find-by-id';
 import { FindByEmailUserUseCase } from '../application/find-by-email/find-by-email';
 import { FindUsersUseCase } from '../application/find/find';
+import { SaveUserUseCase } from '../application/save/save';
+import { SaveUserController } from './http/save/save-user.contorller';
 
 @Module({
     imports: [TypeOrmModule.forFeature([UserEntity])],
     controllers: [
         FindUserByIdController,
-        FindUsersController
+        FindUsersController,
+        SaveUserController,
     ],
     providers: [
         FindByIdUserUseCase,
         FindByEmailUserUseCase,
         FindUsersUseCase,
+        SaveUserUseCase,
         {
             provide: UserRepository,
             useClass: UserRepositoryOrm

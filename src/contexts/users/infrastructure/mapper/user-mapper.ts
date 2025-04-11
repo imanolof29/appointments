@@ -6,6 +6,7 @@ export class UserMapper {
         return User.fromPrimitives({
             id: userEntity.id,
             firstName: userEntity.firstName,
+            lastName: userEntity.lastName,
             email: userEntity.email,
         })
     }
@@ -13,6 +14,7 @@ export class UserMapper {
         const entity = new UserEntity();
         entity.id = user.id.value;
         entity.firstName = user.firstName.value;
+        entity.lastName = user.lastName.value;
         entity.email = user.email.value;
         return entity;
     }
