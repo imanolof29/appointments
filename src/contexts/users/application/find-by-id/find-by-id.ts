@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { UserRepository } from "../../domain/user.repository";
-import { User } from "../../domain/user.entity";
 import { UserNotFoundException } from "../../domain/user-not-found.exception";
+import { UserDto } from "../dto/user.dto";
 
 @Injectable()
 export class FindByIdUserUseCase {
@@ -10,11 +10,11 @@ export class FindByIdUserUseCase {
         private readonly userRepository: UserRepository,
     ) { }
 
-    async execute(id: string): Promise<User> {
+    async execute(id: string): Promise<UserDto> {
         const user = await this.userRepository.findById(id);
         if (!user) {
             throw new UserNotFoundException(id)
         }
-        return user;
+        return UserDto.fromPrimitives(user.toPrimitives());
     }
 }
