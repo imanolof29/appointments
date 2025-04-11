@@ -1,4 +1,4 @@
-import { Body, Controller, NotFoundException, Post } from "@nestjs/common";
+import { Body, Controller, NotFoundException, Post, UseGuards } from "@nestjs/common";
 import { AUTH_CONSTANTS } from "../auth.constants";
 import { SignInUseCase } from "src/contexts/auth/application/sign-in/sign-in";
 import { UserNotFoundException } from "src/contexts/users/domain/user-not-found.exception";

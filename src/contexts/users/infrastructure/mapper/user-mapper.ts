@@ -18,6 +18,9 @@ export class UserMapper {
         entity.firstName = user.firstName.value;
         entity.lastName = user.lastName.value;
         entity.email = user.email.value;
+        entity.isVerified = user.verificationStatus.value;
+        entity.verificationToken = user.verificationToken?.value;
+        entity.verificationTokenExpires = user.verificationTokenExpiresAt?.value;
         return entity;
     }
 }

@@ -19,8 +19,7 @@ export class SignInUseCase {
             throw new UserNotFoundException(properties.email);
         }
         const token = this.jwtService.sign({
-            id: user.id,
-            email: user.email,
+            id: user.id.value,
         })
         return new AuthDto(token);
 
