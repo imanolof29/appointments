@@ -19,7 +19,8 @@ export class SaveUserController {
             return await this.saveUserUseCase.execute({
                 firstName: saveUserDto.firstName,
                 lastName: saveUserDto.lastName,
-                email: saveUserDto.email
+                email: saveUserDto.email,
+                password: saveUserDto.password,
             });
         } catch (error) {
             if (error instanceof UserAlreadyExistsException) {

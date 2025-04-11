@@ -6,12 +6,14 @@ import { UserLastName } from "./user-last-name";
 import { UserVerificationStatus } from "./user-verification-status";
 import { UserVerificationToken } from "./user-verification-token";
 import { UserVerificationTokenExpiresAt } from "./user-verification-token-expires-at";
+import { UserPassword } from "./user-password";
 
 export interface UserPrimitives {
     id: string
     firstName: string
     lastName: string
     email: string
+    password: string
     verificationStatus: boolean
     verificationToken?: string
     verificationTokenExpiresAt?: Date
@@ -23,6 +25,7 @@ export class User extends AggregateRoot {
     readonly firstName: UserFirstName
     readonly lastName: UserLastName
     readonly email: UserEmail
+    readonly password?: UserPassword
     readonly verificationStatus: UserVerificationStatus
     readonly verificationToken?: UserVerificationToken
     readonly verificationTokenExpiresAt?: UserVerificationTokenExpiresAt
@@ -32,6 +35,7 @@ export class User extends AggregateRoot {
         firstName: UserFirstName,
         lastName: UserLastName,
         email: UserEmail,
+        password: UserPassword,
         verificationStatus: UserVerificationStatus,
         verificationToken?: UserVerificationToken,
         verificationTokenExpiresAt?: UserVerificationTokenExpiresAt
@@ -41,6 +45,7 @@ export class User extends AggregateRoot {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
         this.verificationStatus = verificationStatus;
         this.verificationToken = verificationToken;
         this.verificationTokenExpiresAt = verificationTokenExpiresAt
@@ -50,6 +55,7 @@ export class User extends AggregateRoot {
         firstName: string
         lastName: string
         email: string
+        password: string
         verificationStatus: boolean
         verificationToken?: string
         verificationTokenExpiresAt?: Date
@@ -59,6 +65,7 @@ export class User extends AggregateRoot {
             new UserFirstName(data.firstName),
             new UserLastName(data.lastName),
             new UserEmail(data.email),
+            new UserPassword(data.password),
             new UserVerificationStatus(data.verificationStatus),
             data.verificationToken ? new UserVerificationToken(data.verificationToken) : undefined,
             data.verificationTokenExpiresAt ? new UserVerificationTokenExpiresAt(data.verificationTokenExpiresAt) : undefined
@@ -69,12 +76,14 @@ export class User extends AggregateRoot {
         firstName: string
         lastName: string
         email: string
+        password: string
     }): User {
         return new User(
             UserId.random(),
             new UserFirstName(data.firstName),
             new UserLastName(data.lastName),
             new UserEmail(data.email),
+            new UserPassword(data.password),
             UserVerificationStatus.unverified(),
             UserVerificationToken.create(),
             UserVerificationTokenExpiresAt.create()
@@ -87,6 +96,7 @@ export class User extends AggregateRoot {
             this.firstName,
             this.lastName,
             this.email,
+            this.password,
             this.verificationStatus,
             UserVerificationToken.create(),
             UserVerificationTokenExpiresAt.create()
@@ -107,6 +117,7 @@ export class User extends AggregateRoot {
                 this.firstName,
                 this.lastName,
                 this.email,
+                this.password,
                 UserVerificationStatus.verified()
             );
         }
@@ -119,6 +130,7 @@ export class User extends AggregateRoot {
             firstName: this.firstName.value,
             lastName: this.lastName.value,
             email: this.email.value,
+            password: this.password.value,
             verificationStatus: this.verificationStatus.value,
             verificationToken: this.verificationToken ? this.verificationToken.value : undefined,
             verificationTokenExpiresAt: this.verificationTokenExpiresAt ? this.verificationTokenExpiresAt.value : undefined
@@ -131,6 +143,7 @@ export class User extends AggregateRoot {
             new UserFirstName(primitives.firstName),
             new UserLastName(primitives.lastName),
             new UserEmail(primitives.email),
+            new UserPassword(primitives.password),
             new UserVerificationStatus(primitives.verificationStatus),
             primitives.verificationToken ? new UserVerificationToken(primitives.verificationToken) : undefined,
             primitives.verificationTokenExpiresAt ? new UserVerificationTokenExpiresAt(primitives.verificationTokenExpiresAt) : undefined

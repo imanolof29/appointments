@@ -14,11 +14,17 @@ export class UserEntity {
     @Column({ unique: true })
     email: string
 
+    @Column({ nullable: true })
+    password: string
+
     @Column({ default: false })
     isVerified: boolean;
 
     @Column({ nullable: true })
     verificationToken?: string;
+
+    @Column({ default: true })
+    active: boolean;
 
     @Column({ type: 'timestamp', nullable: true })
     verificationTokenExpires?: Date;

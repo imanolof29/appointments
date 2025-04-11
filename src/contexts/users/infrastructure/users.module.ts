@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { FindUserByIdController } from './http/find-by-id/find-user-by-id.controller';
 import { FindUsersController } from './http/find/find-users.controller';
 import { UserRepository } from '../domain/user.repository';
@@ -9,10 +9,11 @@ import { FindByIdUserUseCase } from '../application/find-by-id/find-by-id';
 import { FindByEmailUserUseCase } from '../application/find-by-email/find-by-email';
 import { FindUsersUseCase } from '../application/find/find';
 import { SaveUserUseCase } from '../application/save/save';
-import { SaveUserController } from './http/save/save-user.contorller';
+import { SaveUserController } from './http/save/save-user.controller';
+import { SharedModule } from 'src/contexts/shared/infrastructure/shared.module';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([UserEntity])],
+    imports: [forwardRef(() => SharedModule), TypeOrmModule.forFeature([UserEntity])],
     controllers: [
         FindUserByIdController,
         FindUsersController,

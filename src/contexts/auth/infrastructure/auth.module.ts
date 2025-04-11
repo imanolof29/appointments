@@ -8,6 +8,7 @@ import { VerifyUserUseCase } from "../application/verify/verify-user";
 import { VerifyUserController } from "./http/verify-user/verify-user.controller";
 import { JwtModule } from "@nestjs/jwt";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { SharedModule } from "src/contexts/shared/infrastructure/shared.module";
 
 @Module({
     imports: [
@@ -20,6 +21,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
                 signOptions: { expiresIn: '1d' },
             }),
         }),
+        SharedModule,
     ],
     controllers: [
         SignInController,

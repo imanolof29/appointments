@@ -1,7 +1,6 @@
-import { BadRequestException, Body, Controller, NotFoundException, Post } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Post } from "@nestjs/common";
 import { AUTH_CONSTANTS } from "../auth.constants";
 import { SignUpDto } from "src/contexts/auth/application/dto/sign-up.dto";
-import { UserNotFoundException } from "src/contexts/users/domain/user-not-found.exception";
 import { SignUpUseCase } from "src/contexts/auth/application/sign-up/sign-up";
 import { UserAlreadyExistsException } from "src/contexts/users/domain/user-already-exists.exception";
 
@@ -21,7 +20,8 @@ export class SignUpController {
             return await this.signUpUseCase.execute({
                 firstName: signUpDto.firstName,
                 lastName: signUpDto.lastName,
-                email: signUpDto.email
+                email: signUpDto.email,
+                password: signUpDto.password,
             })
         } catch (error) {
             if (error instanceof UserAlreadyExistsException) {
