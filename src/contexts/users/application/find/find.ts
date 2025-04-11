@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { User } from "../../domain/user.entity";
 import { UserRepository } from "../../domain/user.repository";
+import { UserPrimitives } from "../../domain/user.entity";
 
 @Injectable()
 export class FindUsersUseCase {
@@ -8,11 +8,11 @@ export class FindUsersUseCase {
         private readonly userRepository: UserRepository,
     ) { }
 
-    async execute(): Promise<User[]> {
+    async execute(): Promise<UserPrimitives[]> {
         const users = await this.userRepository.findAll();
         if (!users) {
             throw new Error("Users not found");
         }
-        return users;
+        return users.map(user => user.toPrimitives());
     }
 }

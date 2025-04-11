@@ -4,7 +4,7 @@ import { UserFirstName } from "./user-first-name";
 import { UserEmail } from "./user-email";
 import { UserLastName } from "./user-last-name";
 
-interface UserPrimitives {
+export interface UserPrimitives {
     id: string
     firstName: string
     lastName: string
