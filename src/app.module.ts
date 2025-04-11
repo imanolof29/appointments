@@ -4,9 +4,12 @@ import { AppService } from './app.service';
 import { UsersModule } from './contexts/users/infrastructure/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ResponseNormalizerModule } from './app/http/response-normalizer/response-normalizer.module';
+import { AuthModule } from './contexts/auth/infrastructure/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -18,6 +21,7 @@ import { ResponseNormalizerModule } from './app/http/response-normalizer/respons
       synchronize: true
     }),
     UsersModule,
+    AuthModule,
     ResponseNormalizerModule
   ],
   controllers: [AppController],

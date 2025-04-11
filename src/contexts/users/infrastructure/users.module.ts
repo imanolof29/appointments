@@ -28,5 +28,6 @@ import { SaveUserController } from './http/save/save-user.contorller';
             useClass: UserRepositoryOrm
         }
     ],
+    exports: [UserRepository]
 })
 export class UsersModule { }
