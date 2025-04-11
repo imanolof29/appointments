@@ -5,6 +5,7 @@ import { UserEmail } from "./user-email";
 import { UserLastName } from "./user-last-name";
 import { UserVerificationStatus } from "./user-verification-status";
 import { UserVerificationToken } from "./user-verification-token";
+import { UserVerificationTokenExpiresAt } from "./user-verification-token-expires-at";
 
 export interface UserPrimitives {
     id: string
@@ -13,6 +14,7 @@ export interface UserPrimitives {
     email: string
     verificationStatus: boolean
     verificationToken?: string
+    verificationTokenExpiresAt?: Date
 }
 
 export class User extends AggregateRoot {
@@ -23,6 +25,7 @@ export class User extends AggregateRoot {
     readonly email: UserEmail
     readonly verificationStatus: UserVerificationStatus
     readonly verificationToken?: UserVerificationToken
+    readonly verificationTokenExpiresAt?: UserVerificationTokenExpiresAt
 
     constructor(
         id: UserId,
@@ -30,7 +33,8 @@ export class User extends AggregateRoot {
         lastName: UserLastName,
         email: UserEmail,
         verificationStatus: UserVerificationStatus,
-        verificationToken?: UserVerificationToken
+        verificationToken?: UserVerificationToken,
+        verificationTokenExpiresAt?: UserVerificationTokenExpiresAt
     ) {
         super();
         this.id = id;
@@ -39,6 +43,7 @@ export class User extends AggregateRoot {
         this.email = email;
         this.verificationStatus = verificationStatus;
         this.verificationToken = verificationToken;
+        this.verificationTokenExpiresAt = verificationTokenExpiresAt
     }
 
     static create(data: {
@@ -47,6 +52,7 @@ export class User extends AggregateRoot {
         email: string
         verificationStatus: boolean
         verificationToken?: string
+        verificationTokenExpiresAt?: Date
     }): User {
         return new User(
             UserId.random(),
@@ -54,8 +60,32 @@ export class User extends AggregateRoot {
             new UserLastName(data.lastName),
             new UserEmail(data.email),
             new UserVerificationStatus(data.verificationStatus),
-            data.verificationToken ? new UserVerificationToken(data.verificationToken) : undefined
+            data.verificationToken ? new UserVerificationToken(data.verificationToken) : undefined,
+            data.verificationTokenExpiresAt ? new UserVerificationTokenExpiresAt(data.verificationTokenExpiresAt) : undefined
         )
+    }
+
+    verify(token: string): User | null {
+        if (!this.verificationToken || !this.verificationTokenExpiresAt) {
+            return null;
+        }
+
+        const isMatch = this.verificationToken.value === token;
+        const isExpired = this.verificationTokenExpiresAt.isExpired();
+
+        if (isMatch && !isExpired) {
+            return new User(
+                this.id,
+                this.firstName,
+                this.lastName,
+                this.email,
+                UserVerificationStatus.verified(),
+                this.verificationToken,
+                this.verificationTokenExpiresAt
+            );
+        }
+
+        return null;
     }
 
     toPrimitives(): UserPrimitives {

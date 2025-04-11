@@ -6,6 +6,7 @@ import { JwtModule } from "@nestjs/jwt";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { SignUpController } from "./http/sign-up/sign-up.controller";
 import { SignUpUseCase } from "../application/sign-up/sign-up";
+import { VerifyUserUseCase } from "../application/verify/verify-user";
 
 @Module({
     imports: [
@@ -25,7 +26,8 @@ import { SignUpUseCase } from "../application/sign-up/sign-up";
     ],
     providers: [
         SignInUseCase,
-        SignUpUseCase
+        SignUpUseCase,
+        VerifyUserUseCase
     ]
 })
 export class AuthModule { }
