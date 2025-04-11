@@ -107,12 +107,9 @@ export class User extends AggregateRoot {
                 this.firstName,
                 this.lastName,
                 this.email,
-                UserVerificationStatus.verified(),
-                undefined,
-                undefined
+                UserVerificationStatus.verified()
             );
         }
-
         return null;
     }
 

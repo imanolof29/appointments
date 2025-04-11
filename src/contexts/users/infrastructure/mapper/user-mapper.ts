@@ -10,6 +10,7 @@ export class UserMapper {
             email: userEntity.email,
             verificationStatus: userEntity.isVerified,
             verificationToken: userEntity.verificationToken,
+            verificationTokenExpiresAt: userEntity.verificationTokenExpires,
         })
     }
     static toPersistence(user: User): UserEntity {
