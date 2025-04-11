@@ -65,6 +65,34 @@ export class User extends AggregateRoot {
         )
     }
 
+    static createPendingVerification(data: {
+        firstName: string
+        lastName: string
+        email: string
+    }): User {
+        return new User(
+            UserId.random(),
+            new UserFirstName(data.firstName),
+            new UserLastName(data.lastName),
+            new UserEmail(data.email),
+            UserVerificationStatus.unverified(),
+            UserVerificationToken.create(),
+            UserVerificationTokenExpiresAt.create()
+        )
+    }
+
+    renewVerificationToken(): User {
+        return new User(
+            this.id,
+            this.firstName,
+            this.lastName,
+            this.email,
+            this.verificationStatus,
+            UserVerificationToken.create(),
+            UserVerificationTokenExpiresAt.create()
+        );
+    }
+
     verify(token: string): User | null {
         if (!this.verificationToken || !this.verificationTokenExpiresAt) {
             return null;
@@ -80,8 +108,8 @@ export class User extends AggregateRoot {
                 this.lastName,
                 this.email,
                 UserVerificationStatus.verified(),
-                this.verificationToken,
-                this.verificationTokenExpiresAt
+                undefined,
+                undefined
             );
         }
 
@@ -95,7 +123,8 @@ export class User extends AggregateRoot {
             lastName: this.lastName.value,
             email: this.email.value,
             verificationStatus: this.verificationStatus.value,
-            verificationToken: this.verificationToken ? this.verificationToken.value : undefined
+            verificationToken: this.verificationToken ? this.verificationToken.value : undefined,
+            verificationTokenExpiresAt: this.verificationTokenExpiresAt ? this.verificationTokenExpiresAt.value : undefined
         }
     }
 
@@ -106,7 +135,8 @@ export class User extends AggregateRoot {
             new UserLastName(primitives.lastName),
             new UserEmail(primitives.email),
             new UserVerificationStatus(primitives.verificationStatus),
-            primitives.verificationToken ? new UserVerificationToken(primitives.verificationToken) : undefined
+            primitives.verificationToken ? new UserVerificationToken(primitives.verificationToken) : undefined,
+            primitives.verificationTokenExpiresAt ? new UserVerificationTokenExpiresAt(primitives.verificationTokenExpiresAt) : undefined
         )
     }
 

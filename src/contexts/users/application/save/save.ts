@@ -14,13 +14,10 @@ export class SaveUserUseCase {
         lastName: string,
         email: string
     }): Promise<void> {
-        const user = User.create({
+        const user = User.createPendingVerification({
             firstName: properties.firstName,
             lastName: properties.lastName,
             email: properties.email,
-            verificationStatus: false,
-            //TODO: Add verification token
-            verificationToken: undefined
         });
         const existingUser = await this.userRepository.findByEmail(user.email.value);
         if (existingUser) {
