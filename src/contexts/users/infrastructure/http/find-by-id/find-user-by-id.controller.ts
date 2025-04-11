@@ -1,6 +1,7 @@
-import { Controller, Get, Param } from "@nestjs/common";
+import { Controller, Get, NotFoundException, Param } from "@nestjs/common";
 import { USERS_CONSTANTS } from "../route.constants";
 import { FindByIdUserUseCase } from "src/contexts/users/application/find-by-id/find-by-id";
+import { UserNotFoundException } from "src/contexts/users/domain/user-not-found.exception";
 
 @Controller(USERS_CONSTANTS)
 export class FindUserByIdController {
@@ -14,8 +15,11 @@ export class FindUserByIdController {
     ) {
         try {
             return await this.findByIdUserUseCase.execute(id);
-        } catch (e) {
-            throw e
+        } catch (error) {
+            if (error instanceof UserNotFoundException) {
+                throw new NotFoundException(error.message);
+            }
+            throw error
         }
     }
 

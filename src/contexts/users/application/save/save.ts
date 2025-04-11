@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { User } from "../../domain/user.entity";
 import { UserRepository } from "../../domain/user.repository";
+import { UserAlreadyExistsException } from "../../domain/user-already-exists.exception";
 
 @Injectable()
 export class SaveUserUseCase {
@@ -20,7 +21,7 @@ export class SaveUserUseCase {
         });
         const existingUser = await this.userRepository.findByEmail(user.email.value);
         if (existingUser) {
-            throw new Error("User already exists");
+            throw new UserAlreadyExistsException(user.email.value);
         }
         await this.userRepository.save(user);
     }

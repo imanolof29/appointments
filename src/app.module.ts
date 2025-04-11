@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './contexts/users/infrastructure/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ResponseNormalizerModule } from './app/http/response-normalizer/response-normalizer.module';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       entities: [__dirname + '/**/infrastructure/entity/*.entity{.ts,.js}'],
       synchronize: true
     }),
-    UsersModule
+    UsersModule,
+    ResponseNormalizerModule
   ],
   controllers: [AppController],
   providers: [AppService],

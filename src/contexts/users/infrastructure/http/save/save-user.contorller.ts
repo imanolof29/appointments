@@ -1,7 +1,8 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Post } from "@nestjs/common";
 import { USERS_CONSTANTS } from "../route.constants";
 import { SaveUserUseCase } from "src/contexts/users/application/save/save";
 import { SaveUserDto } from "./save-user.dto";
+import { UserAlreadyExistsException } from "src/contexts/users/domain/user-already-exists.exception";
 
 @Controller(USERS_CONSTANTS)
 export class SaveUserController {
@@ -20,8 +21,11 @@ export class SaveUserController {
                 lastName: saveUserDto.lastName,
                 email: saveUserDto.email
             });
-        } catch (e) {
-            throw e
+        } catch (error) {
+            if (error instanceof UserAlreadyExistsException) {
+                throw new BadRequestException(error.message);
+            }
+            throw error
         }
     }
 
