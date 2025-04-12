@@ -1,5 +1,5 @@
 import { User } from "../../domain/user.entity";
-import { UserEntity } from "../entity/user.entity";
+import { Role, UserEntity } from "../entity/user.entity";
 
 export class UserMapper {
     static toDomain(userEntity: UserEntity): User {
@@ -9,6 +9,7 @@ export class UserMapper {
             lastName: userEntity.lastName,
             email: userEntity.email,
             password: userEntity.password,
+            role: userEntity.role,
             active: userEntity.active,
             verificationStatus: userEntity.isVerified,
             verificationToken: userEntity.verificationToken,
@@ -22,6 +23,7 @@ export class UserMapper {
         entity.lastName = user.lastName.value;
         entity.email = user.email.value;
         entity.password = user.password.value;
+        entity.role = user.role.value as Role;
         entity.active = user.active.value;
         entity.isVerified = user.verificationStatus.value;
         entity.verificationToken = user.verificationToken?.value || null;

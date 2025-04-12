@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BusinessEntity } from "src/contexts/businesses/infrastructure/entity/business.entity";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+
+export enum Role {
+    USER = 'user',
+    BUSINESS = 'business',
+    ADMIN = 'admin',
+}
 
 @Entity({ name: 'users' })
 export class UserEntity {
@@ -16,6 +23,13 @@ export class UserEntity {
 
     @Column({ nullable: true })
     password: string
+
+    @Column({ type: 'enum', enum: Role, default: Role.USER })
+    role: Role
+
+
+    @ManyToOne(() => BusinessEntity, (business) => business.id, { nullable: true })
+    business: BusinessEntity
 
     @Column({ default: false })
     isVerified: boolean;
